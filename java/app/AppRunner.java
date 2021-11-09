@@ -1,5 +1,6 @@
 package app;
 
+import data.HeapFilesMerger;
 import data.PairwiseFilesMerger;
 import data.SortingFileSplitter;
 
@@ -20,7 +21,7 @@ import static data.Constants.INPUT_FILE;
 public class AppRunner {
 
     public static void main(String[] args) throws IOException {
-        FileSorter fileSorter = new FileSorter(new SortingFileSplitter(), new PairwiseFilesMerger());
+        FileSorter fileSorter = new FileSorter(new SortingFileSplitter(), new HeapFilesMerger());
         fileSorter.sortBigFile(INPUT_FILE);
     }
 }

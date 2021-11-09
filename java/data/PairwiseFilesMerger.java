@@ -1,9 +1,14 @@
 package data;
 
-import java.io.*;
-import java.nio.file.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import static data.Constants.*;
@@ -14,15 +19,6 @@ public class PairwiseFilesMerger implements SortedFilesMerger {
     public boolean mergeFiles(List<String> filenames, String inputFile) {
         try {
             mergeFilesInPairs(filenames, inputFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        try {
-            Files.walk(Paths.get("resources/tmp/"))
-                    .sorted(Comparator.reverseOrder())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
         } catch (IOException e) {
             e.printStackTrace();
             return false;
