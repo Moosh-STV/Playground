@@ -12,4 +12,6 @@ public final class Constants {
     public static final String RESULT_FILENAME_PREFIX = "sorted_";
     public static final int LINES_PER_FILE_LIMIT = 3;
     public static final String OUTPUT_FILENAME = "sorted";
+    public static final String OUTPUT_FILE_PART_NAME = "filePart";
+    public static final int LINES_MEMORY_LIMIT_COUNT = 3;
 }

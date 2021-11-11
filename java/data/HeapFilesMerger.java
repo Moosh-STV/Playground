@@ -23,7 +23,7 @@ public class HeapFilesMerger implements SortedFilesMerger {
         FileWriter writer = new FileWriter();
 
         try {
-            for (int i = 0, filenamesSize = filenames.size(); i < filenamesSize; i++) {
+            for (int i = 0; i < filenames.size(); i++) {
                 String filename = filenames.get(i);
                 BufferedReader reader = new BufferedReader(new FileReader(filename));
                 String line = reader.readLine();
@@ -37,7 +37,7 @@ public class HeapFilesMerger implements SortedFilesMerger {
                 IndexedLine min = minHeap.poll();
                 linesChunk.add(min.line);
                 if (linesChunk.size() == READ_LINES_LIMIT) {
-                    writer.writeFile("test/resources/output.txt", linesChunk);
+                    writer.writeFile("test/resources/output.txt", linesChunk); //TODO refactor
                     linesChunk = new ArrayList<>(READ_LINES_LIMIT);
                 }
 

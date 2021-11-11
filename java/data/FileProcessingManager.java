@@ -12,25 +12,26 @@ import static data.Constants.OUTPUT_TMP_DIR;
 public class FileProcessingManager {
 
     private final FileSplitter fileSplitter;
-    private final SortedFilesMerger sortedFilesMerger;
+    private final FilesMerger filesMerger;
 
-    public FileProcessingManager(FileSplitter fileSplitter, SortedFilesMerger sortedFilesMerger) {
+    public FileProcessingManager(FileSplitter fileSplitter, FilesMerger filesMerger) {
         this.fileSplitter = fileSplitter;
-        this.sortedFilesMerger = sortedFilesMerger;
+        this.filesMerger = filesMerger;
     }
 
     public void sortBigFile(String inputFile) throws IOException {
         List<String> filePartsFilenames = fileSplitter.splitFile(inputFile);
-        sortedFilesMerger.mergeFiles(filePartsFilenames, inputFile);
+        filesMerger.mergeFiles(filePartsFilenames, inputFile);
         deleteTmpFiles();
     }
 
     public void dedupBigFile(String inputFile) throws IOException {
         List<String> filePartsFilenames = fileSplitter.splitFile(inputFile);
-
+        filesMerger.mergeFiles(filePartsFilenames, inputFile);
+        deleteTmpFiles();
     }
 
-    private void deleteTmpFiles() {
+    private void deleteTmpFiles() { //TODO refactor
         try {
             Files.walk(Paths.get(OUTPUT_TMP_DIR))
                     .map(Path::toFile)
