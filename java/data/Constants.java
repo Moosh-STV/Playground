@@ -14,4 +14,5 @@ public final class Constants {
     public static final String OUTPUT_FILENAME = "sorted";
     public static final String OUTPUT_FILE_PART_NAME = "filePart";
     public static final int LINES_MEMORY_LIMIT_COUNT = 3;
+    public static final int NUMBER_FILE_PARTS = 10; // TODO FileSizeCalculator should calculate from problem constrains: 2TB/8GB = 250 + a margin = 300.
 }

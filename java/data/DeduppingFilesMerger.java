@@ -1,10 +1,14 @@
 package data;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
-import java.util.function.BiFunction;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static data.Constants.*;
 
 public class DeduppingFilesMerger implements FilesMerger {
 
@@ -15,26 +19,31 @@ public class DeduppingFilesMerger implements FilesMerger {
     }
 
     private void dedupMergeFiles(List<String> filenames) {
-
         FileWriter writer = new FileWriter();
-//        int numberFileParts = 10; // TODO FileSizeCalculator should calculate from problem constrains: 2TB/8GB = 250 + a margin = 300.
+        DeduppingFileSplitter deduppingFileSplitter = new DeduppingFileSplitter();
+        int numberFileParts = NUMBER_FILE_PARTS; // TODO refactor
+        int i = filenames.size() - 1;
 
-        for (int i = 0; i < filenames.size(); i++) {
+        while (i >= 0) {
             Set<String> filePart = new HashSet<>();
-            try (BufferedReader br = new BufferedReader(new FileReader(filenames.get(i)))) {
+            String currentFilename = filenames.get(i);
+            try (BufferedReader br = new BufferedReader(new FileReader(currentFilename))) {
                 String line = br.readLine();
 
-                //TODO assuming (wrongly, for now) each file part fits into memory
-                while (line != null) {
-//                    filePartToLinesChunks = new HashMap<>();
-
-//                    for (int count = 0; count < LINES_MEMORY_LIMIT_COUNT && line != null; count++) {
-//                        String outputFile = OUTPUT_TMP_DIR + OUTPUT_FILE_PART_NAME + (line.hashCode() % numberFileParts) + OUTPUT_FILENAME_TYPE;
-//                        filePartToLinesChunks.merge(outputFile, Set.of(line), mergeSets());
+                //Can use File's length(), but it reads through the file to count bytes.
+                for (int count = 0; count < LINES_MEMORY_LIMIT_COUNT && line != null; count++) {
                     filePart.add(line);
                     line = br.readLine();
-//                    }
+                }
 
+                filenames.remove(i); //O(1) since iterating backwards.
+
+                if (isFileToBigToFitInMemory(line)) {
+                    List<String> additionalFileParts = deduppingFileSplitter.splitFile(currentFilename, ++numberFileParts);
+                    filenames.addAll(additionalFileParts);
+                    i = filenames.size() - 1;
+                } else {
+                    i--;
                 }
                 writer.writeFile("test/resources/output.txt", filePart);
 
@@ -42,5 +51,9 @@ public class DeduppingFilesMerger implements FilesMerger {
                 e.printStackTrace();
             }
         }
+    }
+
+    private boolean isFileToBigToFitInMemory(String line) {
+        return line != null;
     }
 }
