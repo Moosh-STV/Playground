@@ -1,5 +1,6 @@
 package app;
 
+import data.FileProcessingManager;
 import data.HeapFilesMerger;
 import data.PairwiseFilesMerger;
 import data.SortingFileSplitter;
@@ -19,7 +20,7 @@ public class AppRunnerTest {
 
     @Test
     public void testSort() throws IOException {
-        FileSorter fileSorter = new FileSorter(new SortingFileSplitter(), new PairwiseFilesMerger());
+        FileProcessingManager fileSorter = new FileProcessingManager(new SortingFileSplitter(), new PairwiseFilesMerger());
         fileSorter.sortBigFile("test/resources/input.txt");
 
         Path path = Path.of("test/resources/sorted_input.txt");
@@ -38,8 +39,8 @@ public class AppRunnerTest {
 
     @Test
     public void testSortWithMinHeap() throws IOException {
-        FileSorter fileSorter = new FileSorter(new SortingFileSplitter(), new HeapFilesMerger());
-        fileSorter.sortBigFile("test/resources/input.txt");
+        FileProcessingManager fileProcessingManager = new FileProcessingManager(new SortingFileSplitter(), new HeapFilesMerger());
+        fileProcessingManager.sortBigFile("test/resources/input.txt");
 
         Path path = Path.of("test/resources/output.txt");
         assertTrue(Files.exists(path));
