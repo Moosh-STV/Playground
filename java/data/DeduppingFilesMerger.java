@@ -31,7 +31,7 @@ public class DeduppingFilesMerger implements FilesMerger {
                 String line = br.readLine();
 
                 //Can use File's length(), but it reads through the file to count bytes.
-                for (int count = 0; count < LINES_MEMORY_LIMIT_COUNT && line != null; count++) {
+                while (filePart.size() < LINES_PER_FILE_LIMIT && line != null) {
                     filePart.add(line);
                     line = br.readLine();
                 }

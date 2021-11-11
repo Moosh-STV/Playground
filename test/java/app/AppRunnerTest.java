@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -85,6 +86,6 @@ public class AppRunnerTest {
         }
 
         Files.delete(Path.of("test/resources/output.txt"));
-        assertTrue(expected.containsAll(actual) && actual.containsAll(expected));
+        assertTrue(expected.size() == actual.size() && expected.containsAll(actual) && actual.containsAll(expected));
     }
 }
